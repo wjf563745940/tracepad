@@ -1,0 +1,37 @@
+{
+  "name": "@tracepad/elements",
+  "version": "0.1.0",
+  "description": "Web Components skin for tracepad — drop into any framework, or none",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tracepad/headless": "workspace:*"
+  },
+  "devDependencies": {
+    "@tracepad/core": "workspace:*"
+  },
+  "keywords": [
+    "agent",
+    "trace",
+    "web-components",
+    "ai",
+    "ui"
+  ]
+}
