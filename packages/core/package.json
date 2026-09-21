@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "Framework-agnostic agent trace normalisation: streaming protocols in, one trace tree out",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjf563745940/tracepad.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/wjf563745940/tracepad",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

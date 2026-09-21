@@ -28,6 +28,17 @@ pnpm typecheck
 
 Short and imperative: `add langgraph adapter`, `fix tool args concat`.
 
+## Changesets
+
+Any change to a published package needs a changeset:
+
+```bash
+pnpm changeset          # pick the packages and the bump
+```
+
+Pick `patch` for fixes, `minor` for new features, `major` for breaking changes.
+Releases are cut from `main` with `pnpm version` followed by `pnpm release`.
+
 ## Good first issues
 
 Look for the `good first issue` label — usually adapters for new protocols and small parser fixes.

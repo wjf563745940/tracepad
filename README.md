@@ -1,5 +1,7 @@
 # tracepad
 
+[![CI](https://github.com/wjf563745940/tracepad/actions/workflows/ci.yml/badge.svg)](https://github.com/wjf563745940/tracepad/actions/workflows/ci.yml)
+
 > Framework-agnostic UI components for visualising AI agent execution.
 
 **Repo:** https://github.com/wjf563745940/tracepad
@@ -34,6 +36,14 @@ tracepad fills that gap.
 | L3 | `playground` | Replays a real agent stream through all three layers at once |
 
 Business logic lives in L0/L1 only. Framework packages contain no logic — just prop and event bridging.
+
+| Package | npm | |
+|---|---|---|
+| `@tracepad/core` | [npm](https://www.npmjs.com/package/@tracepad/core) | Streaming protocols in, one trace tree out |
+| `@tracepad/headless` | [npm](https://www.npmjs.com/package/@tracepad/headless) | Interaction logic, no rendering |
+| `@tracepad/elements` | [npm](https://www.npmjs.com/package/@tracepad/elements) | `<tp-timeline>`, `<tp-reasoning>` |
+| `@tracepad/vue` | [npm](https://www.npmjs.com/package/@tracepad/vue) | Vue 3 wrapper |
+| `@tracepad/react` | [npm](https://www.npmjs.com/package/@tracepad/react) | React wrapper |
 
 ## Quick start (core)
 
@@ -182,7 +192,8 @@ three render layers produce the exact same rows from the same trace.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Good first issues are labelled.
+See [CONTRIBUTING.md](./CONTRIBUTING.md). The easiest way in is a protocol adapter —
+Vercel AI SDK, LangGraph and MCP are all unclaimed.
 
 ## License
 

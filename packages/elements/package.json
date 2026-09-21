@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "Web Components skin for tracepad — drop into any framework, or none",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjf563745940/tracepad.git",
+    "directory": "packages/elements"
+  },
+  "homepage": "https://github.com/wjf563745940/tracepad",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
