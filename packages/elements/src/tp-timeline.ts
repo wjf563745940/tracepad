@@ -1,8 +1,7 @@
 import type { StepKind } from '@tracepad/core';
-import { createTraceView } from '@tracepad/headless';
+import { createTraceView, rowLabel, statusLabel, statusTone } from '@tracepad/headless';
 import type { TraceLike, TraceStats, TraceView, ViewFilter, VisibleRow } from '@tracepad/headless';
 import { TraceElement } from './base.js';
-import { rowLabel, statusLabel, statusTone } from './format.js';
 import { timelineStyles, tokens } from './theme.js';
 
 const INDENT_PX = 14;

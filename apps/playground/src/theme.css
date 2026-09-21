@@ -1,0 +1,209 @@
+:root {
+  color-scheme: dark;
+  --bg: #14161a;
+  --panel: #1b1e24;
+  --line: #2a2f37;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --accent: #85b7eb;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.top h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.lede {
+  margin: 0 0 16px;
+  max-width: 76ch;
+  color: var(--muted);
+}
+
+.lede code {
+  color: var(--accent);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.controls button,
+.controls select,
+.controls input {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.controls input {
+  min-width: 260px;
+}
+
+.controls button {
+  cursor: pointer;
+}
+
+.controls button:hover {
+  border-color: var(--accent);
+}
+
+.controls .status {
+  margin-left: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  min-width: 0;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.panel .sub {
+  margin: 2px 0 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.panel .body {
+  min-height: 320px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+/* --- render layers: Vue / React live in the light DOM, so they share these
+       class names. <tp-timeline> styles itself inside Shadow DOM. --- */
+.tp-timeline-root,
+tp-timeline {
+  display: block;
+}
+
+.tp-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tp-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tp-row:hover {
+  background: rgba(140, 140, 140, 0.14);
+}
+
+.tp-row[data-selected='true'] {
+  background: rgba(140, 140, 140, 0.24);
+}
+
+.tp-row[data-matched='false'] {
+  opacity: 0.55;
+}
+
+.tp-toggle {
+  width: 14px;
+  text-align: center;
+  color: var(--muted);
+  user-select: none;
+}
+
+.tp-toggle[data-empty='true'] {
+  visibility: hidden;
+}
+
+.tp-kind {
+  font-size: 11px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(140, 140, 140, 0.1);
+  color: var(--muted);
+}
+
+.tp-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-status {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-status[data-status='error'] {
+  color: #f09595;
+}
+
+.tp-status[data-status='running'] {
+  color: var(--accent);
+}
+
+.tp-status[data-status='ok'] {
+  color: #97c459;
+}
+
+.tp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 4px 8px 8px;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-stats b {
+  color: var(--text);
+}
+
+.tp-empty {
+  padding: 8px;
+  color: var(--muted);
+}

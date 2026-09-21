@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tracepad playground — 同一个 trace，三种渲染</title>
+  </head>
+  <body>
+    <header class="top">
+      <h1>tracepad playground</h1>
+      <p class="lede">
+        同一个 trace 对象，三种渲染方式：Web Components / Vue 3 / React 18。
+        回放脚本是真实的 OpenAI Chat Completions SSE，经 <code>openaiChat()</code> 适配器归一化成一棵 trace 树。
+      </p>
+      <div class="controls">
+        <button id="play" type="button">▶ 播放</button>
+        <button id="reset" type="button">↺ 重置</button>
+        <select id="speed" aria-label="回放速度">
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1x</option>
+          <option value="2">2x</option>
+          <option value="4">4x</option>
+        </select>
+        <input id="query" type="search" placeholder="过滤：get_weather / 骑行 / reasoning" />
+        <span id="status" class="status"></span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="panel">
+        <h2>Web Components</h2>
+        <p class="sub">@tracepad/elements · Shadow DOM</p>
+        <div class="body">
+          <tp-timeline summary></tp-timeline>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Vue 3</h2>
+        <p class="sub">@tracepad/vue</p>
+        <div class="body" id="panel-vue"></div>
+      </section>
+
+      <section class="panel">
+        <h2>React 18</h2>
+        <p class="sub">@tracepad/react</p>
+        <div class="body" id="panel-react"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

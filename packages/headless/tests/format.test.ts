@@ -7,7 +7,7 @@ import {
   rowLabel,
   statusLabel,
   statusTone
-} from '../src/format.js';
+} from '../src/index.js';
 
 function node(overrides: Partial<TraceNode> = {}): TraceNode {
   return {
@@ -22,7 +22,7 @@ function node(overrides: Partial<TraceNode> = {}): TraceNode {
   };
 }
 
-describe('elements/format', () => {
+describe('headless/format', () => {
   it('formats durations by magnitude', () => {
     expect(formatDuration(0)).toBe('0ms');
     expect(formatDuration(450)).toBe('450ms');

@@ -30,7 +30,8 @@ tracepad fills that gap.
 | L0 | `@tracepad/core` | Streaming protocols in, one trace tree out. Zero dependencies. |
 | L1 | `@tracepad/headless` | Expansion, selection, filtering, derived rows and stats |
 | L2 | `@tracepad/elements` | Web Components skin — drop into any framework, or none |
-| L2 | `@tracepad/vue`, `@tracepad/react` | Thin framework wrappers (planned) |
+| L2 | `@tracepad/vue`, `@tracepad/react` | Thin framework wrappers: props in, events out |
+| L3 | `playground` | Replays a real agent stream through all three layers at once |
 
 Business logic lives in L0/L1 only. Framework packages contain no logic — just prop and event bridging.
 
@@ -114,6 +115,48 @@ Everything is text-content based — LLM output is never written through `innerH
 The package is import-safe under SSR (no `HTMLElement` at module scope), and
 `defineTraceElements('my')` registers the same classes under a different prefix.
 
+## Framework wrappers
+
+The Vue and React packages are ~150 lines each and contain no logic: they render the
+rows that `@tracepad/headless` produces and forward interaction back to the view.
+The first render is computed from pure helpers, so both work under SSR.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { TraceTimeline } from '@tracepad/vue';
+
+const trace = useMyAgentTrace();
+const query = ref('');
+</script>
+
+<template>
+  <input v-model="query" />
+  <TraceTimeline :trace="trace" :query="query" summary @select="console.log($event.id)" />
+</template>
+```
+
+```tsx
+import { TraceTimeline } from '@tracepad/react';
+
+<TraceTimeline trace={trace} query={query} summary onSelect={(e) => console.log(e.id)} />;
+```
+
+| Package | Component | Props | Events |
+|---|---|---|---|
+| `@tracepad/vue` | `TraceTimeline` | `trace`, `query`, `kinds`, `default-expanded`, `summary` | `select`, `toggle` |
+| `@tracepad/react` | `TraceTimeline` | `trace`, `query`, `kinds`, `defaultExpanded`, `summary` | `onSelect`, `onToggle` |
+
+## Playground
+
+One trace object, three render layers side by side, driven by a scripted two-turn
+agent run that goes through the real `openaiChat()` adapter:
+
+```bash
+pnpm install
+pnpm --filter playground dev
+```
+
 ## Extensibility
 
 v0.1 opens exactly three extension points:
@@ -131,10 +174,11 @@ More extension points will be added when real use cases demand them, not before.
 | `@tracepad/core` | working, tested |
 | `@tracepad/headless` | working, tested |
 | `@tracepad/elements` | working, tested (`tp-timeline`, `tp-reasoning`) |
-| `@tracepad/vue`, `@tracepad/react` | next — thin wrappers over headless |
-| playground | next — real agent replay, native + Vue + React in one page |
+| `@tracepad/vue`, `@tracepad/react` | working, SSR smoke-tested |
+| playground | working — real agent replay, native + Vue + React in one page |
 
-22 tests, zero runtime dependencies in `core`.
+31 tests, zero runtime dependencies in `core`. A playground test asserts that all
+three render layers produce the exact same rows from the same trace.
 
 ## Contributing
 

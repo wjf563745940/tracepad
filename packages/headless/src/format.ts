@@ -1,9 +1,6 @@
 import type { TraceNode } from '@tracepad/core';
 
-/**
- * Presentation-only helpers shared by the render packages.
- * Kept free of DOM APIs so they stay unit-testable in a plain node environment.
- */
+/** Display helpers shared by every render layer — pure, no DOM, no framework. */
 
 export type StatusTone = 'ok' | 'error' | 'running' | 'idle';
 
@@ -16,7 +13,7 @@ export function formatDuration(ms: number): string {
   return `${minutes}m ${seconds}s`;
 }
 
-export function nodeDuration(node: TraceNode, now = Date.now()): string {
+export function nodeDuration(node: TraceNode, now: number = Date.now()): string {
   if (node.startedAt === undefined) return '';
   return formatDuration(Math.max(0, (node.endedAt ?? now) - node.startedAt));
 }
@@ -34,7 +31,7 @@ export function statusTone(node: TraceNode): StatusTone {
   }
 }
 
-export function statusLabel(node: TraceNode, now = Date.now()): string {
+export function statusLabel(node: TraceNode, now: number = Date.now()): string {
   if (node.status === 'error') return 'error';
   if (node.status === 'aborted') return 'aborted';
   const duration = nodeDuration(node, now);
@@ -42,11 +39,12 @@ export function statusLabel(node: TraceNode, now = Date.now()): string {
   return duration;
 }
 
-export function firstLine(text: string, maxLength = 80): string {
+export function firstLine(text: string, max = 80): string {
   const line = text.trim().split(/\r?\n/, 1)[0] ?? '';
-  return line.length > maxLength ? `${line.slice(0, maxLength - 1)}…` : line;
+  return line.length > max ? `${line.slice(0, max - 1)}…` : line;
 }
 
+/** label > tool name > first line of content > "reasoning" > kind */
 export function rowLabel(node: TraceNode): string {
   if (node.label) return node.label;
   if (node.tool?.name) return node.tool.name;

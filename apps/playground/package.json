@@ -1,0 +1,26 @@
+{
+  "name": "playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tracepad/core": "workspace:*",
+    "@tracepad/elements": "workspace:*",
+    "@tracepad/headless": "workspace:*",
+    "@tracepad/react": "workspace:*",
+    "@tracepad/vue": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "vite": "^5.4.11"
+  }
+}

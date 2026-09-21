@@ -4,15 +4,8 @@ import { TraceTimelineElement } from './tp-timeline.js';
 export { TraceElement } from './base.js';
 export { TraceReasoningElement } from './tp-reasoning.js';
 export { TraceTimelineElement } from './tp-timeline.js';
-export {
-  firstLine,
-  formatDuration,
-  nodeDuration,
-  rowLabel,
-  statusLabel,
-  statusTone
-} from './format.js';
-export type { StatusTone } from './format.js';
+export { firstLine, formatDuration, nodeDuration, rowLabel, statusLabel, statusTone } from '@tracepad/headless';
+export type { StatusTone } from '@tracepad/headless';
 export { reasoningStyles, timelineStyles, tokens } from './theme.js';
 
 export const TAGS = {
