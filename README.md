@@ -2,6 +2,8 @@
 
 > Framework-agnostic UI components for visualising AI agent execution.
 
+**Repo:** https://github.com/wjf563745940/tracepad
+
 tracepad turns the messy middle of an AI agent run — reasoning, tool calls, sub-tasks, retries — into one normalised trace tree, then renders it with components you can drop into **any** stack.
 
 It is **not** an observability backend. You do not deploy it, ingest OTLP, or send data anywhere. It is a frontend library: your app already has the stream, tracepad renders it.
@@ -26,7 +28,7 @@ tracepad fills that gap.
 | Layer | Package | Role |
 |---|---|---|
 | L0 | `@tracepad/core` | Streaming protocols in, one trace tree out. Zero dependencies. |
-| L1 | `@tracepad/headless` | Rendering-agnostic interaction logic (planned) |
+| L1 | `@tracepad/headless` | Expansion, selection, filtering, derived rows and stats |
 | L2 | `@tracepad/elements` | Web Components skin — works in any framework (planned) |
 | L2 | `@tracepad/vue`, `@tracepad/react` | Thin framework wrappers (planned) |
 
@@ -56,6 +58,25 @@ trace.push({ type: 'step.delta', id: 's1', channel: 'tool_result', text: '...' }
 trace.push({ type: 'step.end', id: 's1', status: 'ok' });
 ```
 
+## View layer (headless)
+
+Rendering-agnostic interaction logic — no DOM, no framework:
+
+```ts
+import { createTrace } from '@tracepad/core';
+import { createTraceView } from '@tracepad/headless';
+
+const trace = createTrace();
+const view = createTraceView(trace);
+
+view.rows();          // flattened rows with depth — ready for virtualised lists
+view.stats();         // step counts, errors, duration, tokens
+view.toggle('step-1');
+view.setFilter({ query: 'search' });
+```
+
+Filtering keeps ancestor context by default, so a matched tool call still shows the path that led to it.
+
 ## Extensibility
 
 v0.1 opens exactly three extension points:
@@ -68,7 +89,7 @@ More extension points will be added when real use cases demand them, not before.
 
 ## Status
 
-Early. `@tracepad/core` is the foundation and is being built first; UI layers follow. Star/watch if this matches a problem you have.
+`@tracepad/core` and `@tracepad/headless` work and are covered by tests. UI layers (`elements` / `vue` / `react`) are next — the logic they need already exists, so they stay thin.
 
 ## Contributing
 
