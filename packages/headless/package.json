@@ -1,0 +1,35 @@
+{
+  "name": "@tracepad/headless",
+  "version": "0.1.0",
+  "description": "Rendering-agnostic interaction logic for tracepad: expansion, selection, filtering, derived rows and stats",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tracepad/core": "workspace:*"
+  },
+  "keywords": [
+    "agent",
+    "trace",
+    "headless",
+    "ai",
+    "ui"
+  ]
+}
