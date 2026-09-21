@@ -48,4 +48,6 @@ The first render is computed from pure helpers, so it also works under
 Markup uses these class names for styling: `tp-timeline`, `tp-row`, `tp-toggle`,
 `tp-kind`, `tp-label`, `tp-status`, `tp-stats`, `tp-empty`.
 
+Full docs: [使用说明（中文）](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.md) · [Usage (English)](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.en.md)
+
 MIT

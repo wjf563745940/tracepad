@@ -29,4 +29,6 @@ path that led to it.
 Use it directly if you want your own markup, or use one of the render layers built on
 top of it: `@tracepad/elements`, `@tracepad/vue`, `@tracepad/react`.
 
+Full docs: [使用说明（中文）](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.md) · [Usage (English)](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.en.md)
+
 MIT

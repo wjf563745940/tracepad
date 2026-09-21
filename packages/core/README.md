@@ -34,4 +34,6 @@ trace.push({ type: 'step.end', id: 's1', status: 'ok' });
 
 Every update produces a new tree object — snapshots are safe to hold on to.
 
+Full docs: [使用说明（中文）](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.md) · [Usage (English)](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.en.md)
+
 MIT

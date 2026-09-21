@@ -190,6 +190,11 @@ More extension points will be added when real use cases demand them, not before.
 31 tests, zero runtime dependencies in `core`. A playground test asserts that all
 three render layers produce the exact same rows from the same trace.
 
+## Documentation
+
+- [使用说明（简体中文）](./docs/USAGE.md)
+- [Usage (English)](./docs/USAGE.en.md)
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). The easiest way in is a protocol adapter —

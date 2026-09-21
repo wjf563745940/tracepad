@@ -42,4 +42,6 @@ Notes that matter in production:
 - **Import-safe under SSR**: nothing touches `HTMLElement` at module scope.
 - `defineTraceElements('my')` registers the same classes under a different prefix.
 
+Full docs: [使用说明（中文）](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.md) · [Usage (English)](https://github.com/wjf563745940/tracepad/blob/main/docs/USAGE.en.md)
+
 MIT
