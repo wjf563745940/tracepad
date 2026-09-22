@@ -135,11 +135,33 @@ export function applyEvent(tree: TraceTree, event: TraceEvent): TraceTree {
       return next;
     }
     case 'usage': {
+      const input = event.usage.inputTokens ?? 0;
+      const output = event.usage.outputTokens ?? 0;
       next.usage = {
         ...next.usage,
-        inputTokens: (next.usage.inputTokens ?? 0) + (event.usage.inputTokens ?? 0),
-        outputTokens: (next.usage.outputTokens ?? 0) + (event.usage.outputTokens ?? 0)
+        inputTokens: (next.usage.inputTokens ?? 0) + input,
+        outputTokens: (next.usage.outputTokens ?? 0) + output,
+        ...(event.usage.cost !== undefined || next.usage.cost !== undefined
+          ? { cost: (next.usage.cost ?? 0) + (event.usage.cost ?? 0) }
+          : {})
       };
+
+      // Attributed to a step: lets a view show where the tokens actually went.
+      if (event.id) {
+        const node = next.nodes[event.id];
+        if (node) {
+          next.nodes[event.id] = {
+            ...node,
+            usage: {
+              inputTokens: (node.usage?.inputTokens ?? 0) + input,
+              outputTokens: (node.usage?.outputTokens ?? 0) + output,
+              ...(event.usage.cost !== undefined || node.usage?.cost !== undefined
+                ? { cost: (node.usage?.cost ?? 0) + (event.usage.cost ?? 0) }
+                : {})
+            }
+          };
+        }
+      }
       return next;
     }
     case 'run.end': {

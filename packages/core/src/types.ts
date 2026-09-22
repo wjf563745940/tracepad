@@ -95,7 +95,8 @@ export type TraceEvent =
     }
   | { type: 'tool.result'; id: string; output?: string; error?: string; ts?: number }
   | { type: 'media'; id: string; media: TraceMedia; ts?: number }
-  | { type: 'usage'; usage: Usage }
+  /** With `id`, the tokens are attributed to that step as well as the run. */
+  | { type: 'usage'; usage: Usage; id?: string; ts?: number }
   | { type: 'run.end'; ts?: number; status?: Exclude<RunStatus, 'running'> };
 
 export interface TraceAdapter<TChunk = unknown> {

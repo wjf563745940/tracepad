@@ -15,7 +15,8 @@ export const TraceUsage = defineComponent({
       outputTokens: 0,
       totalTokens: 0,
       cost: null,
-      steps: 0
+      steps: 0,
+      perStep: []
     });
     const bars = shallowRef<DurationBar[]>([]);
     let unsubscribe: (() => void) | null = null;
@@ -56,9 +57,7 @@ export const TraceUsage = defineComponent({
       ];
       if (u.cost !== null) metrics.push(['成本', `$${u.cost.toFixed(4)}`]);
 
-      const slowest = Math.max(...bars.value.map((bar) => bar.durationMs)) || 1;
-
-      return h('div', { class: 'tp-usage' }, [
+      const children: Array<ReturnType<typeof h>> = [
         h(
           'div',
           { class: 'tp-metrics' },
@@ -68,27 +67,63 @@ export const TraceUsage = defineComponent({
               h('div', { class: 'tp-metric-v' }, value)
             ])
           )
-        ),
-        h(
-          'div',
-          { class: 'tp-bars' },
-          bars.value.map((bar) =>
-            h('div', { class: 'tp-bar-row', 'data-id': bar.id }, [
-              h('span', { class: 'tp-bar-label' }, bar.label),
-              h('div', { class: 'tp-bar-track' }, [
-                h('div', {
-                  class: 'tp-bar-fill',
-                  style: {
-                    width: `${Math.max(2, (bar.durationMs / slowest) * 100)}%`,
-                    background: kindColor(bar.kind)
-                  }
-                })
-              ]),
-              h('span', { class: 'tp-bar-value' }, formatDuration(bar.durationMs))
-            ])
-          )
         )
-      ]);
+      ];
+
+      // Per-step token attribution, when the adapter reports it.
+      if (u.perStep.length > 0) {
+        const peak = Math.max(...u.perStep.map((step) => step.tokens)) || 1;
+        children.push(h('div', { class: 'tp-section' }, 'token 分布'));
+        children.push(
+          h(
+            'div',
+            { class: 'tp-bars' },
+            u.perStep.map((step) =>
+              h('div', { class: 'tp-bar-row', 'data-id': step.id }, [
+                h('span', { class: 'tp-bar-label' }, step.label),
+                h('div', { class: 'tp-bar-track' }, [
+                  h('div', {
+                    class: 'tp-bar-fill',
+                    style: {
+                      width: `${Math.max(2, (step.tokens / peak) * 100)}%`,
+                      background: kindColor(step.kind)
+                    }
+                  })
+                ]),
+                h('span', { class: 'tp-bar-value' }, String(step.tokens))
+              ])
+            )
+          )
+        );
+      }
+
+      if (bars.value.length > 0) {
+        const slowest = Math.max(...bars.value.map((bar) => bar.durationMs)) || 1;
+        children.push(h('div', { class: 'tp-section' }, '耗时'));
+        children.push(
+          h(
+            'div',
+            { class: 'tp-bars' },
+            bars.value.map((bar) =>
+              h('div', { class: 'tp-bar-row', 'data-id': bar.id }, [
+                h('span', { class: 'tp-bar-label' }, bar.label),
+                h('div', { class: 'tp-bar-track' }, [
+                  h('div', {
+                    class: 'tp-bar-fill',
+                    style: {
+                      width: `${Math.max(2, (bar.durationMs / slowest) * 100)}%`,
+                      background: kindColor(bar.kind)
+                    }
+                  })
+                ]),
+                h('span', { class: 'tp-bar-value' }, formatDuration(bar.durationMs))
+              ])
+            )
+          )
+        );
+      }
+
+      return h('div', { class: 'tp-usage' }, children);
     };
   }
 });

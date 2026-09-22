@@ -37,6 +37,7 @@ export function TraceUsage({ trace }: TraceUsageProps): ReactElement {
   ];
   if (usage.cost !== null) metrics.push(['成本', `$${usage.cost.toFixed(4)}`]);
 
+  const peak = Math.max(...usage.perStep.map((step) => step.tokens)) || 1;
   const slowest = Math.max(...bars.map((bar) => bar.durationMs)) || 1;
 
   return (
@@ -49,23 +50,52 @@ export function TraceUsage({ trace }: TraceUsageProps): ReactElement {
           </div>
         ))}
       </div>
-      <div className="tp-bars">
-        {bars.map((bar) => (
-          <div key={bar.id} className="tp-bar-row" data-id={bar.id}>
-            <span className="tp-bar-label">{bar.label}</span>
-            <div className="tp-bar-track">
-              <div
-                className="tp-bar-fill"
-                style={{
-                  width: `${Math.max(2, (bar.durationMs / slowest) * 100)}%`,
-                  background: kindColor(bar.kind)
-                }}
-              />
-            </div>
-            <span className="tp-bar-value">{formatDuration(bar.durationMs)}</span>
+
+      {usage.perStep.length > 0 && (
+        <>
+          <div className="tp-section">token 分布</div>
+          <div className="tp-bars">
+            {usage.perStep.map((step) => (
+              <div key={step.id} className="tp-bar-row" data-id={step.id}>
+                <span className="tp-bar-label">{step.label}</span>
+                <div className="tp-bar-track">
+                  <div
+                    className="tp-bar-fill"
+                    style={{
+                      width: `${Math.max(2, (step.tokens / peak) * 100)}%`,
+                      background: kindColor(step.kind)
+                    }}
+                  />
+                </div>
+                <span className="tp-bar-value">{step.tokens}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+
+      {bars.length > 0 && (
+        <>
+          <div className="tp-section">耗时</div>
+          <div className="tp-bars">
+            {bars.map((bar) => (
+              <div key={bar.id} className="tp-bar-row" data-id={bar.id}>
+                <span className="tp-bar-label">{bar.label}</span>
+                <div className="tp-bar-track">
+                  <div
+                    className="tp-bar-fill"
+                    style={{
+                      width: `${Math.max(2, (bar.durationMs / slowest) * 100)}%`,
+                      background: kindColor(bar.kind)
+                    }}
+                  />
+                </div>
+                <span className="tp-bar-value">{formatDuration(bar.durationMs)}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

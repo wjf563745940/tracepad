@@ -133,6 +133,8 @@ export const usageStyles = `
 .metric .k { font-size: 11px; color: var(--tp-color-muted); }
 .metric .v { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .bars { display: grid; gap: 6px; }
+.section { font-size: 11px; color: var(--tp-color-muted); margin: 10px 0 6px; }
+.section:first-child { margin-top: 0; }
 .bar-row { display: grid; grid-template-columns: minmax(0, 96px) 1fr 48px; align-items: center; gap: 8px; font-size: 11px; }
 .bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tp-color-muted); }
 .bar-track { height: 8px; border-radius: 999px; background: var(--tp-color-surface); position: relative; overflow: hidden; }

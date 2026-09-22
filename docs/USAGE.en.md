@@ -138,6 +138,16 @@ trace.push({
 reads back**, media is **something a human looks at**. Merging them falls apart
 the moment one step emits several artefacts.
 
+Want to know which step burned the tokens? Give the `usage` event a step id:
+
+```ts
+trace.push({ type: 'usage', id: 's1', usage: { inputTokens: 428, outputTokens: 86 } });
+```
+
+An event with an id counts toward the run total *and* is attributed to that step,
+which makes `tp-usage` render an extra group of per-step token bars. Without an
+id it only moves the total.
+
 ### 3.3 Write a new adapter
 
 An adapter is just a translation from your protocol chunks to `TraceEvent`. This is the

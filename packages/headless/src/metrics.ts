@@ -1,24 +1,54 @@
 import type { StepKind, TraceTree } from '@tracepad/core';
 import { rowLabel } from './format.js';
 
-/** Token and cost totals for a run. */
+/** Tokens attributed to a single step. */
+export interface StepUsage {
+  id: string;
+  label: string;
+  kind: StepKind;
+  inputTokens: number;
+  outputTokens: number;
+  tokens: number;
+}
+
+/** Token and cost totals for a run, plus per-step attribution where known. */
 export interface UsageBreakdown {
   inputTokens: number;
   outputTokens: number;
   totalTokens: number;
   cost: number | null;
   steps: number;
+  perStep: StepUsage[];
 }
 
 export function usageBreakdown(tree: TraceTree): UsageBreakdown {
   const inputTokens = tree.usage.inputTokens ?? 0;
   const outputTokens = tree.usage.outputTokens ?? 0;
+
+  const perStep: StepUsage[] = [];
+  for (const node of Object.values(tree.nodes)) {
+    if (!node.usage) continue;
+    const input = node.usage.inputTokens ?? 0;
+    const output = node.usage.outputTokens ?? 0;
+    if (input + output === 0) continue;
+    perStep.push({
+      id: node.id,
+      label: rowLabel(node),
+      kind: node.kind,
+      inputTokens: input,
+      outputTokens: output,
+      tokens: input + output
+    });
+  }
+  perStep.sort((a, b) => b.tokens - a.tokens);
+
   return {
     inputTokens,
     outputTokens,
     totalTokens: inputTokens + outputTokens,
     cost: tree.usage.cost ?? null,
-    steps: Object.keys(tree.nodes).length
+    steps: Object.keys(tree.nodes).length,
+    perStep
   };
 }
 

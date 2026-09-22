@@ -133,6 +133,15 @@ trace.push({
 `media` 和 `tool.result` 是两回事：result 是**模型要读回去的文本**，
 media 是**给人看的产物**。混在一起会在多产物那一步直接失控。
 
+想知道 token 花在哪一步？给 `usage` 事件带上步骤 id：
+
+```ts
+trace.push({ type: 'usage', id: 's1', usage: { inputTokens: 428, outputTokens: 86 } });
+```
+
+带 id 的事件既累加到整轮总量，也记到那一步头上，`tp-usage` 会多出一组
+token 分布条；不带 id 就只算总量。
+
 ### 3.3 写一个新的适配器
 
 适配器就是把你的协议块翻译成 `TraceEvent`。这是整个项目最容易贡献的部分：
