@@ -3,36 +3,71 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>tracepad playground — 同一个 trace，三种渲染</title>
+    <title>tracepad playground — 同一个 trace，多种形态</title>
   </head>
   <body>
     <header class="top">
       <h1>tracepad playground</h1>
       <p class="lede">
-        同一个 trace 对象，三种渲染方式：Web Components / Vue 3 / React 18。
-        回放脚本是真实的 OpenAI Chat Completions SSE，经 <code>openaiChat()</code> 适配器归一化成一棵 trace 树。
+        一次多模态 agent 运行：搜索 → 查天气 → 出图 → 出图表 → 规划路线 → 给结论。
+        同一个 trace 对象喂给六种组件；回放走的是真实的 OpenAI Chat Completions SSE，
+        经 <code>openaiChat()</code> 适配器归一化成一棵树。
       </p>
       <div class="controls">
         <button id="play" type="button">▶ 播放</button>
         <button id="reset" type="button">↺ 重置</button>
         <select id="speed" aria-label="回放速度">
-          <option value="0.5">0.5x</option>
-          <option value="1" selected>1x</option>
-          <option value="2">2x</option>
+          <option value="1">1x</option>
+          <option value="2" selected>2x</option>
           <option value="4">4x</option>
+          <option value="8">8x</option>
         </select>
-        <input id="query" type="search" placeholder="过滤：get_weather / 骑行 / reasoning" />
+        <input id="query" type="search" placeholder="过滤：get_weather / 骑行 / search_web" />
         <span id="status" class="status"></span>
       </div>
+      <nav class="tabs">
+        <button type="button" data-view="gallery" class="active">组件展厅</button>
+        <button type="button" data-view="compare">三框架对比</button>
+      </nav>
     </header>
 
-    <main class="grid">
+    <main id="gallery" class="gallery">
+      <section class="panel">
+        <h2>时间线</h2>
+        <p class="sub">tp-timeline · 树形步骤</p>
+        <div class="body"><tp-timeline id="timeline" summary></tp-timeline></div>
+      </section>
+
+      <section class="panel">
+        <h2>卡片</h2>
+        <p class="sub">tp-cards · 点开看入参与返回</p>
+        <div class="body"><tp-cards id="cards"></tp-cards></div>
+      </section>
+
+      <section class="panel">
+        <h2>用量</h2>
+        <p class="sub">tp-usage · token 与耗时</p>
+        <div class="body"><tp-usage id="usage"></tp-usage></div>
+      </section>
+
+      <section class="panel">
+        <h2>耗时</h2>
+        <p class="sub">tp-gantt · 步骤在时间轴上的位置</p>
+        <div class="body"><tp-gantt id="gantt"></tp-gantt></div>
+      </section>
+
+      <section class="panel wide">
+        <h2>媒体产物</h2>
+        <p class="sub">tp-media · 点击放大</p>
+        <div class="body"><tp-media id="media"></tp-media></div>
+      </section>
+    </main>
+
+    <main id="compare" class="grid" hidden>
       <section class="panel">
         <h2>Web Components</h2>
         <p class="sub">@tracepad/elements · Shadow DOM</p>
-        <div class="body">
-          <tp-timeline summary></tp-timeline>
-        </div>
+        <div class="body"><tp-timeline id="timeline-native" summary></tp-timeline></div>
       </section>
 
       <section class="panel">
@@ -47,6 +82,10 @@
         <div class="body" id="panel-react"></div>
       </section>
     </main>
+
+    <div id="lightbox" class="lightbox" hidden>
+      <img id="lightbox-img" alt="" />
+    </div>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

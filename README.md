@@ -41,7 +41,7 @@ Business logic lives in L0/L1 only. Framework packages contain no logic — just
 |---|---|---|
 | `@tracepad/core` | [npm](https://www.npmjs.com/package/@tracepad/core) | Streaming protocols in, one trace tree out |
 | `@tracepad/headless` | [npm](https://www.npmjs.com/package/@tracepad/headless) | Interaction logic, no rendering |
-| `@tracepad/elements` | [npm](https://www.npmjs.com/package/@tracepad/elements) | `<tp-timeline>`, `<tp-reasoning>` |
+| `@tracepad/elements` | [npm](https://www.npmjs.com/package/@tracepad/elements) | `<tp-timeline>`, `<tp-cards>`, `<tp-usage>`, `<tp-gantt>`, `<tp-media>`, `<tp-reasoning>` |
 | `@tracepad/vue` | [npm](https://www.npmjs.com/package/@tracepad/vue) | Vue 3 wrapper |
 | `@tracepad/react` | [npm](https://www.npmjs.com/package/@tracepad/react) | React wrapper |
 
@@ -90,13 +90,17 @@ Filtering keeps ancestor context by default, so a matched tool call still shows 
 
 ## Render layer (elements)
 
-The same headless logic, wrapped as Web Components. Importing the package registers
-`<tp-timeline>` and `<tp-reasoning>` — no framework required, Shadow DOM on by default,
-CSS custom properties pierce it for theming.
+The same headless logic, wrapped as Web Components. Importing the package registers six
+elements — `<tp-timeline>`, `<tp-cards>`, `<tp-usage>`, `<tp-gantt>`, `<tp-media>`,
+`<tp-reasoning>` — no framework required, Shadow DOM on by default, CSS custom
+properties pierce it for theming.
 
 ```html
 <tp-timeline summary></tp-timeline>
-<tp-reasoning></tp-reasoning>
+<tp-cards></tp-cards>
+<tp-usage></tp-usage>
+<tp-gantt></tp-gantt>
+<tp-media></tp-media>
 ```
 
 ```ts
@@ -116,10 +120,14 @@ timeline.addEventListener('tp-select', (event) => console.log(event.detail.id));
 await trace.consume(response.body);
 ```
 
-| Element | Attributes | Events |
-|---|---|---|
-| `tp-timeline` | `query`, `kinds`, `default-expanded`, `follow`, `summary`, `theme` | `tp-select`, `tp-toggle` |
-| `tp-reasoning` | `node-id`, `label`, `collapsed`, `theme` | `tp-toggle` |
+| Element | What it shows | Attributes | Events |
+|---|---|---|---|
+| `tp-timeline` | step tree | `query`, `kinds`, `default-expanded`, `follow`, `summary`, `theme` | `tp-select`, `tp-toggle` |
+| `tp-cards` | expandable card per step | `default-open` | `tp-toggle` |
+| `tp-usage` | token totals + duration bars | — | — |
+| `tp-gantt` | steps on the real timeline | — | — |
+| `tp-media` | gallery of produced artefacts | — | `tp-select` |
+| `tp-reasoning` | one step's reasoning | `node-id`, `label`, `collapsed`, `theme` | `tp-toggle` |
 
 Everything is text-content based — LLM output is never written through `innerHTML`.
 The package is import-safe under SSR (no `HTMLElement` at module scope), and
@@ -183,11 +191,11 @@ More extension points will be added when real use cases demand them, not before.
 |---|---|
 | `@tracepad/core` | working, tested |
 | `@tracepad/headless` | working, tested |
-| `@tracepad/elements` | working, tested (`tp-timeline`, `tp-reasoning`) |
+| `@tracepad/elements` | working, tested (six elements) |
 | `@tracepad/vue`, `@tracepad/react` | working, SSR smoke-tested |
-| playground | working — real agent replay, native + Vue + React in one page |
+| playground | working — multimodal agent replay, six components + native/Vue/React compare |
 
-31 tests, zero runtime dependencies in `core`. A playground test asserts that all
+56 tests, zero runtime dependencies in `core`. A playground test asserts that all
 three render layers produce the exact same rows from the same trace.
 
 ## Documentation

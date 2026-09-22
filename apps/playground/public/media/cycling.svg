@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" width="480" height="320" role="img" aria-label="西湖晨间骑行插画">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b3f6b"/>
+      <stop offset="55%" stop-color="#7a5a8a"/>
+      <stop offset="100%" stop-color="#e0915f"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8a765"/>
+      <stop offset="40%" stop-color="#8a6a8f"/>
+      <stop offset="100%" stop-color="#3a4468"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="480" height="320" fill="url(#sky)"/>
+  <circle cx="372" cy="96" r="30" fill="#f5d6a0" opacity="0.9"/>
+  <circle cx="372" cy="96" r="46" fill="#f5d6a0" opacity="0.18"/>
+
+  <path d="M0 208 L74 150 L128 190 L186 138 L250 196 L318 152 L392 204 L480 168 L480 320 L0 320 Z" fill="#26314f" opacity="0.85"/>
+  <path d="M0 232 L66 192 L140 226 L214 186 L292 228 L368 194 L440 230 L480 210 L480 320 L0 320 Z" fill="#1a2338"/>
+
+  <rect y="240" width="480" height="80" fill="url(#water)"/>
+  <path d="M0 262 L480 250" stroke="#f3c98f" stroke-width="2" opacity="0.35"/>
+  <path d="M0 282 L480 268" stroke="#f3c98f" stroke-width="1.5" opacity="0.22"/>
+  <path d="M0 302 L480 290" stroke="#f3c98f" stroke-width="1" opacity="0.15"/>
+
+  <g opacity="0.95">
+    <path d="M96 300 L96 268" stroke="#141a2a" stroke-width="3"/>
+    <circle cx="96" cy="262" r="7" fill="#141a2a"/>
+    <path d="M88 274 L104 274" stroke="#141a2a" stroke-width="2"/>
+    <path d="M104 268 L124 258 L140 258" stroke="#141a2a" stroke-width="3" fill="none"/>
+    <path d="M124 258 L132 274 L146 274" stroke="#141a2a" stroke-width="3" fill="none"/>
+    <path d="M132 274 L150 274" stroke="#141a2a" stroke-width="2"/>
+    <circle cx="132" cy="252" r="5" fill="#141a2a"/>
+    <path d="M128 248 L136 240" stroke="#141a2a" stroke-width="3"/>
+  </g>
+
+  <g fill="#141a2a" opacity="0.9">
+    <path d="M0 320 L0 286 Q40 272 84 288 Q128 302 168 288 L168 320 Z"/>
+  </g>
+
+  <text x="24" y="42" fill="#f0e6d8" font-family="ui-sans-serif, system-ui, sans-serif" font-size="19" font-weight="600">西湖 · 晨骑</text>
+  <text x="24" y="64" fill="#f0e6d8" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" opacity="0.75">24~30℃ · 东南风 3 级</text>
+</svg>

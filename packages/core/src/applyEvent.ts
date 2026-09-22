@@ -19,8 +19,14 @@ function ensureNode(next: TraceTree, id: string, init: Pick<TraceNode, 'kind'> &
         id,
         parentId: init.parentId ?? next.runId,
         kind: init.kind,
-        label: init.label,
+        ...(init.label !== undefined ? { label: init.label } : {}),
         status: 'running',
+        // Carried over explicitly: without this a fresh node loses its start
+        // time, and every duration view (timeline, cards, gantt) stays empty.
+        ...(init.startedAt !== undefined ? { startedAt: init.startedAt } : {}),
+        ...(init.endedAt !== undefined ? { endedAt: init.endedAt } : {}),
+        ...(init.usage !== undefined ? { usage: init.usage } : {}),
+        ...(init.media !== undefined ? { media: init.media } : {}),
         content: '',
         reasoning: '',
         childIds: [],
@@ -107,6 +113,14 @@ export function applyEvent(tree: TraceTree, event: TraceEvent): TraceTree {
           ...(event.error !== undefined ? { error: event.error } : {})
         }
       };
+      return next;
+    }
+    case 'media': {
+      const existing = next.nodes[event.id];
+      const base = existing
+        ? existing
+        : ensureNode(next, event.id, { kind: 'custom', parentId: next.runId, startedAt: ts });
+      next.nodes[event.id] = { ...base, media: [...(base.media ?? []), event.media] };
       return next;
     }
     case 'step.end': {

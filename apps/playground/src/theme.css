@@ -207,3 +207,71 @@ tp-timeline {
   padding: 8px;
   color: var(--muted);
 }
+
+/* --- view tabs --- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs button {
+  font: inherit;
+  font-size: 13px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tabs button:hover {
+  color: var(--text);
+}
+
+.tabs button.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+/* --- gallery view --- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.gallery .wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1000px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- media lightbox --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 14, 0.86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  cursor: zoom-out;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox img {
+  max-width: min(880px, 92vw);
+  max-height: 88vh;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}

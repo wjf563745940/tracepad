@@ -24,6 +24,24 @@ export interface ToolState {
   error?: string;
 }
 
+/**
+ * A binary artefact a step produced — a generated image, a screenshot, a file.
+ * Kept separate from `ToolState.result` on purpose: a tool result is text the
+ * model reads back, media is something a human looks at. Merging the two breaks
+ * as soon as a step emits both.
+ */
+export type MediaKind = 'image' | 'video' | 'audio' | 'file';
+
+export interface TraceMedia {
+  kind: MediaKind;
+  url: string;
+  alt?: string;
+  mime?: string;
+  width?: number;
+  height?: number;
+  label?: string;
+}
+
 export interface TraceNode {
   id: string;
   parentId: string | null;
@@ -35,6 +53,7 @@ export interface TraceNode {
   content: string;
   reasoning: string;
   tool?: ToolState;
+  media?: TraceMedia[];
   usage?: Usage;
   childIds: string[];
 }
@@ -75,6 +94,7 @@ export type TraceEvent =
       args?: string;
     }
   | { type: 'tool.result'; id: string; output?: string; error?: string; ts?: number }
+  | { type: 'media'; id: string; media: TraceMedia; ts?: number }
   | { type: 'usage'; usage: Usage }
   | { type: 'run.end'; ts?: number; status?: Exclude<RunStatus, 'running'> };
 

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" width="480" height="320" role="img" aria-label="环湖骑行路线示意图">
+  <rect width="480" height="320" fill="#0f1420"/>
+
+  <path d="M60 250 Q120 210 150 160 Q170 110 230 100 Q300 92 340 130 Q378 168 356 216 Q336 258 288 262 Q220 268 168 288 Q110 306 60 250 Z"
+        fill="#16233a"/>
+
+  <path d="M108 232 Q150 206 172 166 Q192 124 240 116 Q292 110 322 142 Q350 174 332 206 Q314 238 272 242 Q214 248 176 266 Q138 284 108 232 Z"
+        fill="#1d3a55" opacity="0.85"/>
+
+  <path d="M132 214 Q168 194 186 164 Q204 134 244 130 Q284 126 306 152 Q326 178 310 200 Q292 222 256 226"
+        fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 0"/>
+  <path d="M256 226 Q214 232 190 250 Q166 268 140 252"
+        fill="none" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 7" opacity="0.7"/>
+
+  <g>
+    <circle cx="132" cy="214" r="9" fill="#0f1420" stroke="#5DCAA5" stroke-width="3"/>
+    <text x="118" y="238" fill="#9FE1CB" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11">起点</text>
+
+    <circle cx="244" cy="130" r="9" fill="#0f1420" stroke="#EF9F27" stroke-width="3"/>
+    <text x="258" y="126" fill="#FAC775" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11">苏堤</text>
+
+    <circle cx="310" cy="200" r="9" fill="#0f1420" stroke="#EF9F27" stroke-width="3"/>
+    <text x="322" y="204" fill="#FAC775" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11">补给点</text>
+
+    <circle cx="140" cy="252" r="9" fill="#0f1420" stroke="#7F77DD" stroke-width="3"/>
+    <text x="104" y="272" fill="#CECBF6" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11">终点</text>
+  </g>
+
+  <text x="24" y="40" fill="#e8ecf4" font-family="ui-sans-serif, system-ui, sans-serif" font-size="17" font-weight="600">环湖路线</text>
+  <text x="24" y="60" fill="#8b94a7" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12">全程 18.4 km · 爬升 120 m</text>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#8b94a7">
+    <rect x="24" y="288" width="18" height="4" rx="2" fill="#5DCAA5"/>
+    <text x="48" y="294">已规划</text>
+    <rect x="112" y="288" width="18" height="4" rx="2" fill="#5DCAA5" opacity="0.55"/>
+    <text x="136" y="294">备选</text>
+  </g>
+</svg>

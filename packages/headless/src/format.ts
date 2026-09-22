@@ -1,4 +1,4 @@
-import type { TraceNode } from '@tracepad/core';
+import type { StepKind, TraceNode } from '@tracepad/core';
 
 /** Display helpers shared by every render layer — pure, no DOM, no framework. */
 
@@ -42,6 +42,27 @@ export function statusLabel(node: TraceNode, now: number = Date.now()): string {
 export function firstLine(text: string, max = 80): string {
   const line = text.trim().split(/\r?\n/, 1)[0] ?? '';
   return line.length > max ? `${line.slice(0, max - 1)}…` : line;
+}
+
+/**
+ * Colour per step kind. Lives here rather than in a render layer so the
+ * Web Component, Vue and React skins stay in visual sync.
+ */
+export function kindColor(kind: StepKind): string {
+  switch (kind) {
+    case 'reasoning':
+      return '#7F77DD';
+    case 'tool':
+      return '#378ADD';
+    case 'message':
+      return '#1D9E75';
+    case 'subagent':
+      return '#EF9F27';
+    case 'error':
+      return '#E24B4A';
+    default:
+      return '#888780';
+  }
 }
 
 /** label > tool name > first line of content > "reasoning" > kind */

@@ -123,6 +123,21 @@ trace.push({ type: 'usage', usage: { inputTokens: 128, outputTokens: 42 } });
 trace.push({ type: 'run.end', status: 'ok' });
 ```
 
+Did a step produce an image, a screenshot, a file? Attach it to the step that
+made it and `<tp-media>` collects them into a gallery:
+
+```ts
+trace.push({
+  type: 'media',
+  id: 's1',
+  media: { kind: 'image', url: '/media/chart.svg', alt: 'Temperature curve', label: 'Hourly' }
+});
+```
+
+`media` and `tool.result` are deliberately separate: a result is **text the model
+reads back**, media is **something a human looks at**. Merging them falls apart
+the moment one step emits several artefacts.
+
 ### 3.3 Write a new adapter
 
 An adapter is just a translation from your protocol chunks to `TraceEvent`. This is the
@@ -221,17 +236,31 @@ matches, the path leading to it stays visible (`keepAncestors: false` to opt out
 
 ### `@tracepad/elements`
 
-| Element | Attributes | Events |
-|---|---|---|
-| `tp-timeline` | `query`, `kinds`, `default-expanded`, `follow`, `summary`, `theme` | `tp-select`, `tp-toggle` |
-| `tp-reasoning` | `node-id`, `label`, `collapsed`, `theme` | `tp-toggle` |
+| Element | What it shows | Attributes | Events |
+|---|---|---|---|
+| `tp-timeline` | step tree | `query`, `kinds`, `default-expanded`, `follow`, `summary`, `theme` | `tp-select`, `tp-toggle` |
+| `tp-reasoning` | one step's reasoning | `node-id`, `label`, `collapsed`, `theme` | `tp-toggle` |
+| `tp-cards` | expandable card per step (args / result / error) | `default-open` | `tp-toggle` |
+| `tp-usage` | token totals + per-step duration bars | — | — |
+| `tp-gantt` | steps on the real timeline | — | — |
+| `tp-media` | gallery of produced artefacts | — | `tp-select` |
+
+All six take the trace the same way — assign it to the element's `.trace` property.
 
 ```ts
 import { defineTraceElements } from '@tracepad/elements';
-defineTraceElements('my');   // registers <my-timeline> / <my-reasoning>
+defineTraceElements('my');   // registers <my-timeline> / <my-cards> / ...
+
+const el = document.querySelector('tp-cards') as HTMLElement & { trace: TraceLike };
+el.trace = trace;            // re-renders on its own from here on
 ```
 
+`tp-media` only lays the images out; clicking emits `tp-select` and opening a
+lightbox is the host app's job (the playground shows this with a fixed overlay).
+
 ### `@tracepad/vue`
+
+Exports `TraceTimeline`, `TraceCards`, `TraceUsage`, `TraceGantt`, `TraceMedia`.
 
 | Prop | Type | Default |
 |---|---|---|
@@ -241,7 +270,8 @@ defineTraceElements('my');   // registers <my-timeline> / <my-reasoning>
 | `defaultExpanded` | `boolean` | `true` |
 | `summary` | `boolean` | `false` |
 
-Emits `select` and `toggle`.
+`query` / `kinds` / `defaultExpanded` / `summary` belong to `TraceTimeline`; the
+other components take `trace` alone. Emits `select` and `toggle`.
 
 ### `@tracepad/react`
 

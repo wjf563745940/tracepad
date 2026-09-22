@@ -1,2 +1,10 @@
+export { TraceCards } from './TraceCards.js';
+export type { TraceCardsProps } from './TraceCards.js';
+export { TraceGantt } from './TraceGantt.js';
+export type { TraceGanttProps } from './TraceGantt.js';
+export { TraceMedia } from './TraceMedia.js';
+export type { TraceMediaProps } from './TraceMedia.js';
 export { TraceTimeline } from './TraceTimeline.js';
 export type { TraceTimelineProps } from './TraceTimeline.js';
+export { TraceUsage } from './TraceUsage.js';
+export type { TraceUsageProps } from './TraceUsage.js';

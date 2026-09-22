@@ -1,16 +1,44 @@
+import { TraceCardsElement } from './tp-cards.js';
+import { TraceGanttElement } from './tp-gantt.js';
+import { TraceMediaElement } from './tp-media.js';
 import { TraceReasoningElement } from './tp-reasoning.js';
 import { TraceTimelineElement } from './tp-timeline.js';
+import { TraceUsageElement } from './tp-usage.js';
 
 export { TraceElement } from './base.js';
+export { TraceCardsElement } from './tp-cards.js';
+export { TraceGanttElement } from './tp-gantt.js';
+export { TraceMediaElement } from './tp-media.js';
 export { TraceReasoningElement } from './tp-reasoning.js';
 export { TraceTimelineElement } from './tp-timeline.js';
-export { firstLine, formatDuration, nodeDuration, rowLabel, statusLabel, statusTone } from '@tracepad/headless';
+export { TraceUsageElement } from './tp-usage.js';
+export {
+  firstLine,
+  formatDuration,
+  kindColor,
+  nodeDuration,
+  rowLabel,
+  statusLabel,
+  statusTone
+} from '@tracepad/headless';
 export type { StatusTone } from '@tracepad/headless';
-export { reasoningStyles, timelineStyles, tokens } from './theme.js';
+export {
+  cardsStyles,
+  ganttStyles,
+  mediaStyles,
+  reasoningStyles,
+  timelineStyles,
+  tokens,
+  usageStyles
+} from './theme.js';
 
 export const TAGS = {
   timeline: 'tp-timeline',
-  reasoning: 'tp-reasoning'
+  reasoning: 'tp-reasoning',
+  cards: 'tp-cards',
+  usage: 'tp-usage',
+  gantt: 'tp-gantt',
+  media: 'tp-media'
 } as const;
 
 /**
@@ -25,6 +53,10 @@ export function defineTraceElements(prefix = 'tp'): void {
   };
   register(`${prefix}-timeline`, TraceTimelineElement);
   register(`${prefix}-reasoning`, TraceReasoningElement);
+  register(`${prefix}-cards`, TraceCardsElement);
+  register(`${prefix}-usage`, TraceUsageElement);
+  register(`${prefix}-gantt`, TraceGanttElement);
+  register(`${prefix}-media`, TraceMediaElement);
 }
 
 if (typeof customElements !== 'undefined') defineTraceElements();

@@ -6,11 +6,13 @@ export type { SseChunk } from './adapters/index.js';
 export { emptyTree } from './types.js';
 export type {
   DeltaChannel,
+  MediaKind,
   StepKind,
   RunStatus,
   ToolState,
   TraceAdapter,
   TraceEvent,
+  TraceMedia,
   TraceNode,
   TraceTree,
   Usage

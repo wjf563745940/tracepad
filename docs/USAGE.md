@@ -119,6 +119,20 @@ trace.push({ type: 'usage', usage: { inputTokens: 128, outputTokens: 42 } });
 trace.push({ type: 'run.end', status: 'ok' });
 ```
 
+步骤产出了图片、截图这类二进制产物？挂到产出它的那一步上，
+`<tp-media>` 会把它们收成一张画廊：
+
+```ts
+trace.push({
+  type: 'media',
+  id: 's1',
+  media: { kind: 'image', url: '/media/chart.svg', alt: '温度曲线', label: '逐时温度' }
+});
+```
+
+`media` 和 `tool.result` 是两回事：result 是**模型要读回去的文本**，
+media 是**给人看的产物**。混在一起会在多产物那一步直接失控。
+
 ### 3.3 写一个新的适配器
 
 适配器就是把你的协议块翻译成 `TraceEvent`。这是整个项目最容易贡献的部分：
@@ -213,17 +227,31 @@ view.dispose();       // 一定要在卸载时调用
 
 ### `@tracepad/elements`
 
-| 元素 | 属性 | 事件 |
-|---|---|---|
-| `tp-timeline` | `query`、`kinds`、`default-expanded`、`follow`、`summary`、`theme` | `tp-select`、`tp-toggle` |
-| `tp-reasoning` | `node-id`、`label`、`collapsed`、`theme` | `tp-toggle` |
+| 元素 | 作用 | 属性 | 事件 |
+|---|---|---|---|
+| `tp-timeline` | 树形步骤列表 | `query`、`kinds`、`default-expanded`、`follow`、`summary`、`theme` | `tp-select`、`tp-toggle` |
+| `tp-reasoning` | 单个步骤的思考内容 | `node-id`、`label`、`collapsed`、`theme` | `tp-toggle` |
+| `tp-cards` | 每步一张可展开卡片（入参/返回/错误） | `default-open` | `tp-toggle` |
+| `tp-usage` | token 总量 + 每步耗时条 | — | — |
+| `tp-gantt` | 步骤在真实时间轴上的位置 | — | — |
+| `tp-media` | 媒体产物画廊 | — | `tp-select` |
+
+六个组件都是同一个用法：把 trace 对象赋给元素的 `.trace` 属性。
 
 ```ts
 import { defineTraceElements } from '@tracepad/elements';
-defineTraceElements('my');   // 注册成 <my-timeline> / <my-reasoning>
+defineTraceElements('my');   // 注册成 <my-timeline> / <my-cards> / ...
+
+const el = document.querySelector('tp-cards') as HTMLElement & { trace: TraceLike };
+el.trace = trace;            // 之后会跟着数据流自动重渲染
 ```
 
+`tp-media` 只负责把图片排出来，点击时发出 `tp-select`；放大预览交给宿主应用自己实现
+（playground 里用一个 `position: fixed` 的遮罩层演示）。
+
 ### `@tracepad/vue`
+
+导出 `TraceTimeline`、`TraceCards`、`TraceUsage`、`TraceGantt`、`TraceMedia`。
 
 | Prop | 类型 | 默认 |
 |---|---|---|
@@ -233,11 +261,12 @@ defineTraceElements('my');   // 注册成 <my-timeline> / <my-reasoning>
 | `defaultExpanded` | `boolean` | `true` |
 | `summary` | `boolean` | `false` |
 
+`query` / `kinds` / `defaultExpanded` / `summary` 只有 `TraceTimeline` 有，其余组件只吃 `trace`。
 事件：`select`、`toggle`。
 
 ### `@tracepad/react`
 
-同上，另加 `onSelect` / `onToggle` 回调。
+导出同名五个组件，另加 `onSelect` / `onToggle` 回调。
 
 ---
 
@@ -265,8 +294,14 @@ tp-timeline {
 内置浅色一套，直接 `<tp-timeline theme="light">`。
 
 Vue / React 包装渲染在 light DOM，用这些类名写样式：
-`tp-timeline`、`tp-row`、`tp-toggle`、`tp-kind`、`tp-label`、`tp-status`、`tp-stats`、`tp-empty`。
-状态通过属性暴露：`data-selected`、`data-matched`、`data-status`、`data-empty`。
+
+- 时间线：`tp-timeline`、`tp-row`、`tp-toggle`、`tp-kind`、`tp-label`、`tp-status`、`tp-stats`、`tp-empty`
+- 卡片：`tp-cards`、`tp-card`、`tp-card-head`、`tp-card-chev`、`tp-card-dot`、`tp-card-title`、`tp-card-dur`、`tp-card-body`、`tp-code`
+- 用量：`tp-usage`、`tp-metrics`、`tp-metric`、`tp-metric-k`、`tp-metric-v`、`tp-bars`、`tp-bar-row`、`tp-bar-track`、`tp-bar-fill`、`tp-bar-label`、`tp-bar-value`
+- 耗时：`tp-gantt`、`tp-gantt-row`、`tp-gantt-track`、`tp-gantt-fill`、`tp-gantt-label`、`tp-gantt-foot`
+- 媒体：`tp-media`、`tp-media-item`、`tp-media-thumb`、`tp-media-fallback`、`tp-media-cap`
+
+状态通过属性暴露：`data-selected`、`data-matched`、`data-status`、`data-empty`、`data-running`、`data-open`。
 
 ---
 
